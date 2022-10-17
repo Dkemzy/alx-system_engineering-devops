@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
 # story of the etc/passwd
+exec 3< /etc/passwd
+while -r read -u 3; do
+	echo "$REPLY" | cut -d ':' -f1,3,6
+done
