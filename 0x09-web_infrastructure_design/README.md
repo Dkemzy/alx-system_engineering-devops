@@ -1,2 +1,3 @@
-# Web infrastructure design <br>## Team Project </br> 
+# Web infrastructure design 
+## Team Project 
 Team members Dennis Kamau, Jake Mdigo, Oscar Tiego
