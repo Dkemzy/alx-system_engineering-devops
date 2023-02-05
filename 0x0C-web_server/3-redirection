@@ -1,12 +1,10 @@
 #!/bin/bash
-
 # Check if Nginx is installed
 if ! [ -x "$(command -v nginx)" ]; then
   echo 'Nginx is not installed. Installing Nginx...'
   sudo apt-get update
   sudo apt-get install nginx -y
 fi
-
 # Create a new Nginx configuration file for the redirect
 sudo bash -c 'cat > /etc/nginx/sites-available/redirect_me <<EOF
 server {
@@ -18,7 +16,6 @@ server {
         }
 }
 EOF'
-
 # Enable the new configuration
 sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
 
