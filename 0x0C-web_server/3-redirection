@@ -1,23 +1,23 @@
-#!/bin/bash
-# Check if Nginx is installed
-if ! [ -x "$(command -v nginx)" ]; then
-  echo 'Nginx is not installed. Installing Nginx...'
-  sudo apt-get update
-  sudo apt-get install nginx -y
-fi
-# Create a new Nginx configuration file for the redirect
-sudo bash -c 'cat > /etc/nginx/sites-available/redirect_me <<EOF
-server {
-        listen 80;
-        server_name localhost;
+#!/usr/bin/env bash
+# Script that installs Nginx server and redirects /redirect_me
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo chown -R "$USER":"$USER" /var/www/html/index.nginx-debian.html
+sudo chown -R "$USER":"$USER" /etc/nginx/sites-available/default
 
-        location /redirect_me {
-                return 301 http://www.example.com;
-        }
-}
-EOF'
-# Enable the new configuration
-sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
-# Restart Nginx to apply the changes
-sudo service nginx restart
+redirection=\
+"server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	server_name _;
+	location /redirect_me {
+		return 301 https://github.com/;
+	}
+}"
+
+echo -e "$redirection" > /etc/nginx/sites-available/default
+sudo service nginx start
